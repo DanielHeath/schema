@@ -127,7 +127,7 @@ func (d *Decoder) decode(v reflect.Value, path string, parts []pathPart,
 		v.Set(value)
 	} else {
 		if len(values) != 1 {
-			return ConversionError{path, -1}
+			return NumberOfTimesError{path}
 		}
 		if values[0] == "" {
 			// We are just ignoring empty values for now.
@@ -159,6 +159,15 @@ func (e ConversionError) Error() string {
 	}
 	return fmt.Sprintf("schema: error converting value for index %d of %q",
 		e.Index, e.Key)
+}
+
+// NumberOfTimesError stores information about a failed conversion from array to single value.
+type NumberOfTimesError struct {
+	Key string // key from the source map.
+}
+
+func (e NumberOfTimesError) Error() string {
+	return fmt.Sprintf("%q cannot be specified multiple times", e.Key)
 }
 
 // MultiError stores multiple decoding errors.
