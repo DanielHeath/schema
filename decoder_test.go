@@ -500,6 +500,7 @@ type S4 struct {
 	F01 int64
 	F02 float64
 	F03 bool
+	F04 string
 }
 
 func TestConversionError(t *testing.T) {
@@ -507,12 +508,13 @@ func TestConversionError(t *testing.T) {
 		"F01": {"foo"},
 		"F02": {"bar"},
 		"F03": {"baz"},
+		"F04": {"baz", "bam"},
 	}
 	s := &S4{}
 	e := NewDecoder().Decode(s, data)
 
 	m := e.(MultiError)
-	if len(m) != 3 {
-		t.Errorf("Expected 3 errors, got %v", m)
+	if len(m) != 4 {
+		t.Errorf("Expected 4 errors, got %v", m)
 	}
 }

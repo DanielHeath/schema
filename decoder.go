@@ -126,6 +126,9 @@ func (d *Decoder) decode(v reflect.Value, path string, parts []pathPart,
 		value := reflect.Append(reflect.MakeSlice(t, 0, 0), items...)
 		v.Set(value)
 	} else {
+		if len(values) != 1 {
+			return ConversionError{path, -1}
+		}
 		if values[0] == "" {
 			// We are just ignoring empty values for now.
 			return nil
